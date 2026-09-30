@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PalateCare AI — Cultural Nutrition & Clinical Taste Synthesis Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="logo-mark">
+        <span class="logo-icon">🌿</span>
+      </div>
+      <div>
+        <div class="brand-title">PalateCare <span class="brand-badge">AI</span></div>
+        <div class="brand-subtitle">Qloo Cultural Intelligence × Clinical Nutrition Agent</div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <div class="status-indicator">
+        <span class="pulse-dot"></span>
+        <span>Qloo Taste Graph Active</span>
+      </div>
+      <button class="api-key-btn" id="toggleApiKeyDrawer">🔑 Qloo API Key</button>
+    </div>
+  </header>
+
+  <!-- API Key Drawer Modal -->
+  <div class="modal-overlay" id="apiKeyModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Qloo API Configuration</h3>
+        <button class="close-modal" id="closeApiKeyModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-hint">Enter your official <code>hackathon.api.qloo.com</code> API key below to query live endpoints, or utilize the zero-latency High-Fidelity Taste Graph Sandbox.</p>
+        <div class="input-group">
+          <label for="qlooApiKeyInput">Qloo API Key (X-Api-Key)</label>
+          <input type="text" id="qlooApiKeyInput" placeholder="e.g. qloo_live_..." class="text-input">
+        </div>
+        <div class="radio-toggle">
+          <label><input type="radio" name="modeSelect" value="sandbox" checked> Use Local Taste Graph Sandbox (Instant)</label>
+          <label><input type="radio" name="modeSelect" value="live"> Use Live Qloo Endpoint (https://hackathon.api.qloo.com)</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" id="saveApiSettings">Apply Configuration</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-container">
+    <!-- Patient Persona Switcher -->
+    <section class="persona-section">
+      <div class="section-title-row">
+        <h2>Clinical Patient Archetypes</h2>
+        <span class="section-tag">Cross-Domain Cultural Grounding</span>
+      </div>
+      <div class="persona-grid">
+        <div class="persona-card active" data-persona="sophia">
+          <div class="persona-header">
+            <span class="persona-avatar">👵🏼</span>
+            <div>
+              <div class="persona-name">Sophia Paleologos</div>
+              <div class="persona-origin">Greek Heritage • Athens / SF</div>
+            </div>
+          </div>
+          <div class="persona-condition">Chronic Kidney Disease (Stage 3)</div>
+          <div class="persona-flavor-tags">
+            <span>🌿 Oregano</span>
+            <span>🍋 Lemon Zest</span>
+            <span>🫒 Olive Wood</span>
+          </div>
+        </div>
+
+        <div class="persona-card" data-persona="carlos">
+          <div class="persona-header">
+            <span class="persona-avatar">👨🏽</span>
+            <div>
+              <div class="persona-name">Carlos Mendoza</div>
+              <div class="persona-origin">Oaxacan Heritage • Oaxaca / LA</div>
+            </div>
+          </div>
+          <div class="persona-condition">Type 2 Diabetes & Cardiac Low-Sodium</div>
+          <div class="persona-flavor-tags">
+            <span>🌱 Epazote</span>
+            <span>🌶️ Charred Guajillo</span>
+            <span>🍋 Lime</span>
+          </div>
+        </div>
+
+        <div class="persona-card" data-persona="meiling">
+          <div class="persona-header">
+            <span class="persona-avatar">👵🏻</span>
+            <div>
+              <div class="persona-name">Mei-Ling Chen</div>
+              <div class="persona-origin">Cantonese Heritage • Hong Kong / NYC</div>
+            </div>
+          </div>
+          <div class="persona-condition">Oncology Post-Chemo Dysphagia</div>
+          <div class="persona-flavor-tags">
+            <span>🫚 Ginger Root</span>
+            <span>🥣 Silken Broth</span>
+            <span>🧅 Scallion</span>
+          </div>
+        </div>
+
+        <div class="persona-card" data-persona="rajesh">
+          <div class="persona-header">
+            <span class="persona-avatar">👴🏾</span>
+            <div>
+              <div class="persona-name">Rajesh Sharma</div>
+              <div class="persona-origin">Punjabi Heritage • Amritsar / Chicago</div>
+            </div>
+          </div>
+          <div class="persona-condition">Stage 2 Hypertension & Dentition</div>
+          <div class="persona-flavor-tags">
+            <span>🌿 Fenugreek</span>
+            <span>🌰 Cumin</span>
+            <span>💛 Turmeric</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Workspace: Flavor Radar + Clinical Nutrient Gates -->
+    <div class="workspace-grid">
+      <!-- Left: Flavor Radar & Qloo Affinity Breakdown -->
+      <section class="panel radar-panel">
+        <div class="panel-header">
+          <h3>Cultural Flavor Memory vs. Qloo Match</h3>
+          <span class="badge-accent" id="affinityScoreBadge">99.7% Match</span>
+        </div>
+        <div class="canvas-wrapper">
+          <canvas id="flavorRadarCanvas" width="400" height="320"></canvas>
+        </div>
+        <div class="flavor-legend">
+          <div class="legend-item"><span class="legend-dot user-dot"></span> Patient Flavor Memory</div>
+          <div class="legend-item"><span class="legend-dot qloo-dot"></span> Qloo Synthesized Dining</div>
+        </div>
+        
+        <!-- Flavor Sliders for Custom Tuning -->
+        <div class="tuning-section">
+          <h4>Interactive Flavor Profile Tuning</h4>
+          <div class="slider-row">
+            <label>Herbaceous: <span id="valHerb">0.90</span></label>
+            <input type="range" min="0" max="1" step="0.05" value="0.90" id="sliderHerb" class="slider">
+          </div>
+          <div class="slider-row">
+            <label>Citrus & Acid: <span id="valCitrus">0.85</span></label>
+            <input type="range" min="0" max="1" step="0.05" value="0.85" id="sliderCitrus" class="slider">
+          </div>
+          <div class="slider-row">
+            <label>Umami & Broth: <span id="valUmami">0.70</span></label>
+            <input type="range" min="0" max="1" step="0.05" value="0.70" id="sliderUmami" class="slider">
+          </div>
+          <div class="slider-row">
+            <label>Sweet Accent: <span id="valSweet">0.15</span></label>
+            <input type="range" min="0" max="1" step="0.05" value="0.15" id="sliderSweet" class="slider">
+          </div>
+          <div class="slider-row">
+            <label>Piquant / Spiced: <span id="valPiquant">0.30</span></label>
+            <input type="range" min="0" max="1" step="0.05" value="0.30" id="sliderPiquant" class="slider">
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Synthesized Clinical Dining & Culinary Adaptations -->
+      <section class="panel recommendations-panel">
+        <div class="panel-header">
+          <h3>Synthesized Cultural Dining Protocol</h3>
+          <button class="btn-secondary" id="exportProtocolBtn">📄 Export JSON</button>
+        </div>
+
+        <div class="agent-synthesis-card" id="agentSummaryBox">
+          <div class="agent-icon">🤖</div>
+          <div class="agent-text" id="agentSummaryText">
+            Synthesized cultural dining protocol for Sophia Paleologos navigating CKD_Stage_3. Selected 'Aegean Herb & Grill' with 99.8% cultural-clinical alignment index.
+          </div>
+        </div>
+
+        <div class="top-match-card" id="topMatchCard">
+          <div class="match-badge">🥇 #1 QLOO TASTE GRAPH MATCH</div>
+          <div class="entity-title-row">
+            <div>
+              <h4 id="topEntityName">Aegean Herb & Grill</h4>
+              <div class="entity-category" id="topEntityCategory">Mediterranean / Greek • urn:entity:place</div>
+            </div>
+            <div class="composite-score" id="topCompositeScore">99.8%</div>
+          </div>
+
+          <!-- Nutritional Metabolic Metrics -->
+          <div class="nutrient-chips">
+            <div class="chip">
+              <span class="chip-label">Sodium</span>
+              <span class="chip-val" id="chipSodium">480 mg</span>
+            </div>
+            <div class="chip">
+              <span class="chip-label">Potassium</span>
+              <span class="chip-val" id="chipPotassium">420 mg</span>
+            </div>
+            <div class="chip">
+              <span class="chip-label">Glycemic Index</span>
+              <span class="chip-val" id="chipGI">35 (Low)</span>
+            </div>
+            <div class="chip">
+              <span class="chip-label">Texture</span>
+              <span class="chip-val" id="chipTexture">Tender Grill</span>
+            </div>
+          </div>
+
+          <div class="entity-tags" id="topEntityTags">
+            <span>#oregano</span>
+            <span>#lemon</span>
+            <span>#olive_oil</span>
+            <span>#wild_greens</span>
+            <span>#grilled_sea_bass</span>
+          </div>
+        </div>
+
+        <!-- Culinary Substitutions -->
+        <div class="adaptations-card">
+          <h4>🍳 Chef & Caregiver Culinary Adaptation Guide</h4>
+          <p class="adapt-hint">Preserving heritage flavor memories through metabolic-safe substitutions:</p>
+          <div class="adaptations-list" id="adaptationsList">
+            <!-- Injected by JavaScript -->
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div>Built for <strong>Qloo Agent Hackathon 2026</strong> • Grounding Autonomous Systems in 250M+ Entity Cultural Taste Graphs</div>
+    <div class="footer-links">
+      <a href="https://github.com/Naveen57990/PalateCare" target="_blank">GitHub Repository</a>
+      <a href="https://docs.qloo.com" target="_blank">Qloo Docs</a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
